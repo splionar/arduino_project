@@ -71,7 +71,7 @@ void setup() /*----( SETUP: RUNS ONCE )----*/
     SensorData.print(",");
     SensorData.print("Internal Temperature");
     SensorData.print(",");
-    SensorData.println("Surface Temperature");
+    SensorData.print("Surface Temperature");
     SensorData.print(",");
     SensorData.println("Ambient Temperature");
     SensorData.close();
@@ -127,7 +127,7 @@ void loop() /*----( LOOP: RUNS CONSTANTLY )----*/
     SensorData.print(",");
     SensorData.print(sensor_in);
     SensorData.print(",");
-    SensorData.println(sensor_out);
+    SensorData.print(sensor_out);
     SensorData.print(",");
     SensorData.println(sensor_amb);
     SensorData.close();
