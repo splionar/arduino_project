@@ -116,7 +116,7 @@ void loop() /*----( LOOP: RUNS CONSTANTLY )----*/
     Serial.println(" Degrees C");
     
     Serial.print("Ambient = ");
-    Serial.print(sensor_Amb);
+    Serial.print(sensor_amb);
     Serial.println(" Degrees C");
   
     delay(1000);
