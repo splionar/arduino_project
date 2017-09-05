@@ -5,7 +5,7 @@ import matplotlib.dates as mdates
 #import matplotlib.ticker as plticker
 
 ##Retrieving Data
-filename = 'testt.csv'
+filename = 'test_050917.csv'
 with open(filename) as f:
     reader = csv.reader(f)
     header_row = next(reader)
@@ -13,11 +13,13 @@ with open(filename) as f:
     timestamp_str = []
     temperature_in = []
     temperature_out = []
+    temperature_ambient = []
 
     for row in reader:
         timestamp_str.append(row[0])
         temperature_in.append(float(row[1]))
         temperature_out.append(float(row[2]))
+        temperature_ambient.append(float(row[3]))
 
 timestamp_time = pd.to_datetime(timestamp_str) #Convert string to TimeIndex format
 
@@ -29,6 +31,7 @@ fig.autofmt_xdate()
 
 plt.plot(timestamp_time,temperature_in,linewidth = 1, label = "Temperature IN")
 plt.plot(timestamp_time,temperature_out,linewidth = 1, label = "Temperature OUT")
+plt.plot(timestamp_time,temperature_ambient,linewidth = 1, label = "Temperature AMBIENT")
 
 xfmt = mdates.DateFormatter('%d-%m-%y %H:%M:%S')
 ax.xaxis.set_major_formatter(xfmt)
