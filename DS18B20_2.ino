@@ -10,6 +10,7 @@
 #define ONE_WIRE_BUS_IN 2 /*-(Connect to Pin 2 )-*/
 #define ONE_WIRE_BUS_OUT 4 /*-(Connect to Pin 4 )-*/
 #define ONE_WIRE_BUS_AMB 6 /*-(Connect to Pin 6 )-*/
+#define PUMP 9 /*-(Connect to Pin 9 )-*/
 
 // for the data logging shield, define pin number for the SD cs line
 const int chipSelect = 10; //Select pin 10
@@ -38,14 +39,16 @@ char timestamp[20];
 
 void setup() /*----( SETUP: RUNS ONCE )----*/
 {
+  pinMode(PUMP, OUTPUT);
+  analogWrite(PUMP, 200);
   /*-(start serial port to see results )-*/
   Serial.begin(9600);
   rtc.begin();
-  DateTime now = rtc.now();
-  sprintf(timestamp, "%02d/%02d/%02d %02d:%02d:%02d", now.day(), now.month(), now.year(),now.hour(), now.minute(), now.second());  
-  Serial.println("Temperature Sensor: DS18B20");
-  Serial.print("Start time: ");
-  Serial.println(timestamp);
+  //DateTime now = rtc.now();
+  //sprintf(timestamp, "%02d/%02d/%02d %02d:%02d:%02d", now.day(), now.month(), now.year(),now.hour(), now.minute(), now.second());  
+  //Serial.println("Temperature Sensor: DS18B20");
+  //Serial.print("Start time: ");
+  //Serial.println(timestamp);
 
   /*-( Start up the DallasTemperature library )-*/
   sensorsIn.begin();
@@ -85,41 +88,44 @@ void setup() /*----( SETUP: RUNS ONCE )----*/
 
 void loop() /*----( LOOP: RUNS CONSTANTLY )----*/
 {
-  Serial.println();
+  //Serial.println();
   Serial.print("Requesting temperature...");
   sensorsIn.requestTemperatures(); // Send the command to get temperatures
+  sensor_in = sensorsIn.getTempCByIndex(0);
   sensorsOut.requestTemperatures(); // Send the command to get temperatures
+  sensor_out = sensorsOut.getTempCByIndex(0);
   sensorsAmb.requestTemperatures(); // Send the command to get temperatures
+  sensor_amb = sensorsAmb.getTempCByIndex(0);
   Serial.println("DONE");
 
   DateTime now = rtc.now();
   sprintf(timestamp, "%02d/%02d/%02d %02d:%02d:%02d", now.day(), now.month(), now.year(),now.hour(), now.minute(), now.second());  
-  //Set variable values
-  sensor_in = sensorsIn.getTempCByIndex(0);
-  sensor_out = sensorsOut.getTempCByIndex(1);
-  sensor_amb = sensorsAmb.getTempCByIndex(2);
+  //Set variable values  
   
   //Open file to log data in.
   File SensorData = SD.open("test.txt", FILE_WRITE);
   
   if (SensorData){ //If SensorData = TRUE, print to serial monitor and log data to SensorData
     //Print to serial monitor
-    Serial.print("Date/Time : ");
-    Serial.println(timestamp);
+    //Serial.print("Date/Time : ");
+    Serial.print(timestamp);
+    Serial.print(",");
     
-    Serial.print("Internal = ");
+    //Serial.print("Internal = ");
     Serial.print(sensor_in);
-    Serial.println(" Degrees C");
+    Serial.print(",");
+    //Serial.println(" Degrees C");
 
-    Serial.print("Surface = ");
+    //Serial.print("Surface = ");
     Serial.print(sensor_out);
-    Serial.println(" Degrees C");
+    Serial.print(",");
+    //Serial.println(" Degrees C");
     
-    Serial.print("Ambient = ");
-    Serial.print(sensor_amb);
-    Serial.println(" Degrees C");
+    //Serial.print("Ambient = ");
+    Serial.println(sensor_amb);
+    //Serial.println(" Degrees C");
   
-    delay(1000);
+    //delay(1000);
   
     //Log to SD Card
     Serial.print("Logging to SD Card...");
@@ -132,6 +138,8 @@ void loop() /*----( LOOP: RUNS CONSTANTLY )----*/
     SensorData.println(sensor_amb);
     SensorData.close();
     Serial.println("DONE");
+
+    delay(2000);
   }   //end if loop
   else
   {
