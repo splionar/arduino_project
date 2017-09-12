@@ -46,7 +46,7 @@ fig.autofmt_xdate()
 #loc_x = plticker.MultipleLocator(base=0.005) # this locator puts ticks at regular intervals
 loc_y = plticker.MultipleLocator(base=1)
 #ax.xaxis.set_major_locator(loc_x)
-ax.xaxis.set_major_locator(loc_y)
+ax.yaxis.set_major_locator(loc_y)
 
 plt.plot(timestamp_time,temperature_in,linewidth = 1, label = "Temperature Internal")
 plt.plot(timestamp_time,temperature_out,linewidth = 1, label = "Temperature Surface")
