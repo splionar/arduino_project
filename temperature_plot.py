@@ -32,17 +32,27 @@ for i in range(len(temperature_in)):
     if temperature_ambient[i] == -127.00:
         temperature_ambient[i] = temperature_ambient[i-1]
 
+#Examining difference between internal and surface temperature
+''' 
+diff_in_out = []
+for i in range(len(temperature_in)):
+    diff_in_out.append(temperature_in[i] - temperature_out[i])
+'''    
 timestamp_time = pd.to_datetime(timestamp_str) #Convert string to TimeIndex format
 
 ##Plot##
 fig, ax = plt.subplots(1)
 fig.autofmt_xdate()
-#loc = plticker.MultipleLocator(base=0.005) # this locator puts ticks at regular intervals
-#ax.xaxis.set_major_locator(loc)
+#loc_x = plticker.MultipleLocator(base=0.005) # this locator puts ticks at regular intervals
+loc_y = plticker.MultipleLocator(base=1)
+#ax.xaxis.set_major_locator(loc_x)
+ax.xaxis.set_major_locator(loc_y)
 
 plt.plot(timestamp_time,temperature_in,linewidth = 1, label = "Temperature Internal")
 plt.plot(timestamp_time,temperature_out,linewidth = 1, label = "Temperature Surface")
 plt.plot(timestamp_time,temperature_ambient,linewidth = 1, label = "Temperature Ambient")
+
+#plt.plot(timestamp_time,diff_in_out,linewidth = 1, label = "Temperature Internal - Surface")
 
 xfmt = mdates.DateFormatter('%d-%m-%y %H:%M:%S')
 ax.xaxis.set_major_formatter(xfmt)
