@@ -5,7 +5,7 @@ import matplotlib.dates as mdates
 import matplotlib.ticker as plticker
 
 ##Retrieving Data
-filename = 'outdoor_shaded.csv'
+filename = ''
 with open(filename) as f:
     reader = csv.reader(f)
     header_row = next(reader)
@@ -22,15 +22,14 @@ with open(filename) as f:
         temperature_ambient.append(float(row[3]))
 
 #Removing noise
-for i in range(len(temperature_in)):
-    if temperature_in[i] == -127.00:
-        temperature_in[i] = temperature_in[i-1]
+def remove_noise(data):
+    for i in range(len(data)):
+        if data[i] == -127.00:
+            data[i] = data[i - 1]
 
-    if temperature_out[i] == -127.00:
-        temperature_out[i] = temperature_out[i-1]
-
-    if temperature_ambient[i] == -127.00:
-        temperature_ambient[i] = temperature_ambient[i-1]
+remove_noise(temperature_out)
+remove_noise(temperature_in)
+remove_noise(temperature_ambient)
 
 #Examining difference between internal and surface temperature
 ''' 
@@ -54,7 +53,7 @@ plt.plot(timestamp_time,temperature_ambient,linewidth = 1, label = "Temperature 
 
 #plt.plot(timestamp_time,diff_in_out,linewidth = 1, label = "Temperature Internal - Surface")
 
-xfmt = mdates.DateFormatter('%d-%m-%y %H:%M:%S')
+xfmt = mdates.DateFormatter('%Y-%m-%d %H:%M:%S')
 ax.xaxis.set_major_formatter(xfmt)
 
 plt.title('Temperature in Celcius')
