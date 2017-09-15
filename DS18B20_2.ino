@@ -99,7 +99,7 @@ void loop() /*----( LOOP: RUNS CONSTANTLY )----*/
   Serial.println("DONE");
 
   DateTime now = rtc.now();
-  sprintf(timestamp, "%02d/%02d/%02d %02d:%02d:%02d", now.day(), now.month(), now.year(),now.hour(), now.minute(), now.second());  
+  sprintf(timestamp, "%02d-%02d-%02d %02d:%02d:%02d", now.year(), now.month(), now.day(),now.hour(), now.minute(), now.second());  
   //Set variable values  
   
   //Open file to log data in.
